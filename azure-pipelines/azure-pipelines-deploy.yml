@@ -3,7 +3,7 @@ trigger:
 
 variables:
   - name: APP_NAME
-    value: 'poc-azure-static-web-app'
+    value: 'playground-angular'
   # defined in the Pipeline Library variable group
   # see: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml
   - group: DEFAULT_VARIABLE_GROUP
@@ -17,12 +17,10 @@ steps:
     inputs:
       versionSpec: '16.19.x'
 
-  - script: |
-      npm ci
+  - script: npm ci
     displayName: 'Install Node Packages'
 
-  - script: |
-      npm run build
+  - script: npm run build
     displayName: 'Angular build'
 
   - task: CopyFiles@2
