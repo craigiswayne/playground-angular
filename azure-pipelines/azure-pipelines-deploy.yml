@@ -6,7 +6,7 @@ variables:
     value: 'playground-angular'
   # defined in the Pipeline Library variable group
   # see: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml
-  - group: DEFAULT_VARIABLE_GROUP
+#  - group: DEFAULT_VARIABLE_GROUP
 
 pool:
   vmImage: ubuntu-latest
