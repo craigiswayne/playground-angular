@@ -30,6 +30,14 @@ stages:
           # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/copy-files-v2?view=azure-pipelines&tabs=yaml
           - script: |
               ls -laGH dist
+          - task: CopyFiles@2
+            displayName: 'Copying files from dist folder'
+            inputs:
+              Contents: |
+                dist/**
+              TargetFolder: $(Build.ArtifactStagingDirectory)
+          - script: |
+              ls -laGh $(Build.ArtifactStagingDirectory)
 
   - stage: Test
     displayName: 'Testing directory contents in a different step'
@@ -39,7 +47,7 @@ stages:
         displayName: 'List contents'
         steps:
           - script: |
-              ls -laGH dist
+              ls -laGH $(Build.ArtifactStagingDirectory)
 
   - stage: Deploy
     displayName: 'Deploy to Azure Web App'
