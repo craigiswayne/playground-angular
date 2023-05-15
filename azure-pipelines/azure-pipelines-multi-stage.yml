@@ -27,10 +27,23 @@ stages:
               npm run build
               npm run test:ci
             displayName: 'Build and Test'
+          # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/copy-files-v2?view=azure-pipelines&tabs=yaml
+          - script: |
+              ls -laGH dist
+
+  - stage: Test
+    displayName: 'Testing directory contents in a different step'
+    dependsOn: Build
+    jobs:
+      - job: Test
+        displayName: 'List contents'
+        steps:
+          - script: |
+              ls -laGH dist
 
   - stage: Deploy
     displayName: 'Deploy to Azure Web App'
-    dependsOn: Build
+    dependsOn: Test
     jobs:
       - deployment: Deploy
         displayName: 'Deploy'
