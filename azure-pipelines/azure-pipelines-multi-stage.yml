@@ -1,0 +1,51 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: APP_NAME
+    value: 'playground-angular'
+#   defined in the Pipeline Library variable group
+#   see: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml
+  - group: DEFAULT_VARIABLE_GROUP
+
+stages:
+  - stage: Build
+    displayName: 'Build and Test'
+    jobs:
+      - job: Build
+        displayName: 'Build'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '16.19.x'
+            displayName: 'Install Node.js'
+          - script: |
+              npm ci
+              npm run build
+              npm run test:ci
+            displayName: 'Build and Test'
+
+  - stage: Deploy
+    displayName: 'Deploy to Azure Web App'
+    dependsOn: Build
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy'
+        environment: 'production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureStaticWebApp@0
+                  inputs:
+                    app_location: '/dist/$(APP_NAME)/'
+                    skip_app_build: true
+                    skip_api_build: true
+                    is_static_export: true
+                    # this is the directory where the pipeline will look for the staticwebapp.config.json file
+                    config_file_location: '/azure-pipelines/'
+                    # this variable comes from the pipeline library variable group
+                    azure_static_web_apps_api_token: '$(PLAYGROUND_ANGULAR_DEPLOYMENT_TOKEN)'
