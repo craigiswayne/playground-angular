@@ -34,6 +34,11 @@ stages:
               npm run build
               npm run test:ci
             displayName: 'Build and Test'
+          - task: CopyFiles@2
+            displayName: 'Copying files from dist folder'
+            inputs:
+              Contents: azure-pipelines/*
+              TargetFolder: dist/
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Artifact'
             inputs:
