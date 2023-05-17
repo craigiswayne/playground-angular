@@ -38,16 +38,21 @@ stages:
               TargetFolder: $(Build.ArtifactStagingDirectory)
           - script: |
               ls -laGh $(Build.ArtifactStagingDirectory)/
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact'
+            inputs:
+              pathToPublish: $(Build.ArtifactStagingDirectory)/dist
+              artifactName: $(Build.Repository.Name)_$(Build.SourceBranchName)_$(Build.BuildNumber)
 
   - stage: Test
     displayName: 'Testing directory contents in a different step'
     dependsOn: Build
     jobs:
       - job: Test
-        displayName: 'List contents of $(Build.ArtifactStagingDirectory)/dist'
+        displayName: 'List contents of $(Build.ArtifactStagingDirectory)'
         steps:
-          - script: ls -laGH $(Build.ArtifactStagingDirectory)/dist
-            displayName: 'List contents of $(Build.ArtifactStagingDirectory)/dist'
+          - script: tree $(Build.ArtifactStagingDirectory)
+            displayName: 'List contents of $(Build.ArtifactStagingDirectory)'
 
 
   - stage: Deploy
