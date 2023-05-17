@@ -1,17 +1,15 @@
 trigger:
-  - "*"
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - '*'
 
 pool:
   vmImage: 'ubuntu-latest'
-
-variables:
-  - name: APP_NAME
-    value: 'playground-angular'
-  - name: ARTIFACT_NAME
-    value: '$(Build.Repository.Name)_$(Build.SourceBranchName)_$(Build.BuildNumber)'
-#   defined in the Pipeline Library variable group
-#   see: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml
-  - group: DEPLOYMENT_TOKENS
 
 stages:
   - stage: Build
@@ -22,33 +20,16 @@ stages:
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: '14.21.3'
+              versionSpec: '14.x'
             displayName: 'Install Node.js'
           - script: |
-              npm ci
+              npm install
               npm run build
-              npm run test:ci
+              npm run test
             displayName: 'Build and Test'
-          # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/copy-files-v2?view=azure-pipelines&tabs=yaml
-          - script: ls -laGH dist
-            displayName: 'List contents of dist'
-          - task: CopyFiles@2
-            displayName: 'Copying files from dist folder'
-            inputs:
-              Contents: |
-                dist/$(APP_NAME)/**
-              TargetFolder: $(Build.ArtifactStagingDirectory)
-          - script: |
-              ls -laGh $(Build.ArtifactStagingDirectory)/
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Artifact'
-            inputs:
-              pathToPublish: $(Build.ArtifactStagingDirectory)/dist
-              artifactName: $(ARTIFACT_NAME)
-
 
   - stage: Deploy
-    displayName: 'Deploy to Azure Web App'
+    displayName: 'Deploy to Azure Static Web Apps'
     dependsOn: Build
     jobs:
       - deployment: Deploy
@@ -58,21 +39,7 @@ stages:
           runOnce:
             deploy:
               steps:
-                - script: tree $(System.DefaultWorkingDirectory)
-                  displayName: 'tree $(System.DefaultWorkingDirectory)'
-                - task: DownloadPipelineArtifact@2
-                  inputs:
-                    artifact: $(ARTIFACT_NAME)
-                    path: $(System.DefaultWorkingDirectory)/
-                - script: tree $(System.DefaultWorkingDirectory)
-                  displayName: 'tree $(System.DefaultWorkingDirectory)'
                 - task: AzureStaticWebApp@0
                   inputs:
-                    app_location: '/'
-                    skip_app_build: true
-                    skip_api_build: true
-                    is_static_export: true
-                    # this is the directory where the pipeline will look for the staticwebapp.config.json file
-                    config_file_location: '/azure-pipelines/'
-                    # this variable comes from the pipeline library variable group
-                    azure_static_web_apps_api_token: '$(PLAYGROUND_ANGULAR_DEPLOYMENT_TOKEN)'
+                    appName: 'MyAzureStaticWebApp'
+                    azureStaticWebAppsApiToken: $(AzureStaticWebAppsApiToken)
