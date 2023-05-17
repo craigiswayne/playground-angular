@@ -72,4 +72,4 @@ stages:
                     verbose: true
                     azure_static_web_apps_api_token: $(PLAYGROUND_ANGULAR_DEPLOYMENT_TOKEN)
                     workingDirectory: $(System.ArtifactsDirectory)/drop
-                    config_file_location: 'azure-pipelines/'
+                    config_file_location: '/azure-pipelines/'
