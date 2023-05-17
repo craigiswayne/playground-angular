@@ -7,6 +7,8 @@ pool:
 variables:
   - name: APP_NAME
     value: 'playground-angular'
+  - name: ARTIFACT_NAME
+    value: '$(Build.Repository.Name)_$(Build.SourceBranchName)_$(Build.BuildNumber)'
 #   defined in the Pipeline Library variable group
 #   see: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml
   - group: DEPLOYMENT_TOKENS
@@ -42,7 +44,7 @@ stages:
             displayName: 'Publish Artifact'
             inputs:
               pathToPublish: $(Build.ArtifactStagingDirectory)/dist
-              artifactName: $(Build.Repository.Name)_$(Build.SourceBranchName)_$(Build.BuildNumber)
+              artifactName: $(ARTIFACT_NAME)
 
   - stage: Test
     displayName: 'Testing directory contents in a different step'
@@ -51,6 +53,10 @@ stages:
       - job: Test
         displayName: 'List contents of $(Build.ArtifactStagingDirectory)'
         steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: $(ARTIFACT_NAME)
+              path: $(System.ArtifactStagingDirectory)/
           - script: tree $(Build.ArtifactStagingDirectory)
             displayName: 'List contents of $(Build.ArtifactStagingDirectory)'
 
