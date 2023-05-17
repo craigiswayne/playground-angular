@@ -44,10 +44,10 @@ stages:
     dependsOn: Build
     jobs:
       - job: Test
-        displayName: 'List contents of $(Build.ArtifactStagingDirectory)'
+        displayName: 'List contents of $(Build.ArtifactStagingDirectory)/dist'
         steps:
-          - script: ls -laGH $(Build.ArtifactStagingDirectory)/
-            displayName: 'List contents of $(Build.ArtifactStagingDirectory)'
+          - script: ls -laGH $(Build.ArtifactStagingDirectory)/dist
+            displayName: 'List contents of $(Build.ArtifactStagingDirectory)/dist'
 
 
   - stage: Deploy
@@ -63,7 +63,7 @@ stages:
               steps:
                 - task: AzureStaticWebApp@0
                   inputs:
-                    app_location: '$(Build.ArtifactStagingDirectory)'
+                    app_location: '/dist/$(APP_NAME)'
                     skip_app_build: true
                     skip_api_build: true
                     is_static_export: true
