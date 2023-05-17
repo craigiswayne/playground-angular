@@ -42,4 +42,4 @@ stages:
                 - task: AzureStaticWebApp@0
                   inputs:
                     appName: 'MyAzureStaticWebApp'
-                    azureStaticWebAppsApiToken: $(AzureStaticWebAppsApiToken)
+                    azureStaticWebAppsApiToken: $(PLAYGROUND_ANGULAR_DEPLOYMENT_TOKEN)
