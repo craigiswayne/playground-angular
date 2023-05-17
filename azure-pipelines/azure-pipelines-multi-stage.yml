@@ -20,12 +20,12 @@ stages:
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: '14.x'
+              versionSpec: '14.21.3'
             displayName: 'Install Node.js'
           - script: |
-              npm install
-              npm run build
-              npm run test
+              npm ci
+              ng build --prod
+              npm run test:ci
             displayName: 'Build and Test'
 
   - stage: Deploy
