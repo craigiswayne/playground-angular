@@ -58,7 +58,7 @@ stages:
                 - task: AzureStaticWebApp@0
                   displayName: Deploy to staging environment
                   inputs:
-                    app_location: /
+                    app_location: playground-angular
                     skip_app_build: true
                     skip_api_build: true
                     is_static_export: true
