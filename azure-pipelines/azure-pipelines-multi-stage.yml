@@ -8,6 +8,15 @@ pr:
     include:
       - '*'
 
+variables:
+  - name: APP_NAME
+    value: 'playground-angular'
+  - name: ARTIFACT_NAME
+    value: '$(Build.Repository.Name)_$(Build.SourceBranchName)_$(Build.BuildNumber)'
+  #   defined in the Pipeline Library variable group
+  #   see: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml
+  - group: DEPLOYMENT_TOKENS
+
 pool:
   vmImage: 'ubuntu-latest'
 
