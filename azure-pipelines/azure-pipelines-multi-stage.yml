@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - main
+      - feature/azure-static-web-app
 
 pr:
   branches:
