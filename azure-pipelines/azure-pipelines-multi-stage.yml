@@ -58,10 +58,14 @@ stages:
           runOnce:
             deploy:
               steps:
+                - script: tree $(System.DefaultWorkingDirectory)
+                  displayName: 'tree $(System.DefaultWorkingDirectory)'
                 - task: DownloadPipelineArtifact@2
                   inputs:
                     artifact: $(ARTIFACT_NAME)
                     path: $(System.DefaultWorkingDirectory)/
+                - script: tree $(System.DefaultWorkingDirectory)
+                  displayName: 'tree $(System.DefaultWorkingDirectory)'
                 - task: AzureStaticWebApp@0
                   inputs:
                     app_location: '/'
