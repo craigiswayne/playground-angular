@@ -46,24 +46,10 @@ stages:
               pathToPublish: $(Build.ArtifactStagingDirectory)/dist
               artifactName: $(ARTIFACT_NAME)
 
-  - stage: Test
-    displayName: 'Testing directory contents in a different step'
-    dependsOn: Build
-    jobs:
-      - job: Test
-        displayName: 'List contents of $(Build.ArtifactStagingDirectory)'
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: $(ARTIFACT_NAME)
-              path: $(System.ArtifactStagingDirectory)/
-          - script: tree $(Build.ArtifactStagingDirectory)
-            displayName: 'List contents of $(Build.ArtifactStagingDirectory)'
-
 
   - stage: Deploy
     displayName: 'Deploy to Azure Web App'
-    dependsOn: Test
+    dependsOn: Build
     jobs:
       - deployment: Deploy
         displayName: 'Deploy'
@@ -75,10 +61,10 @@ stages:
                 - task: DownloadPipelineArtifact@2
                   inputs:
                     artifact: $(ARTIFACT_NAME)
-                    path: $(System.ArtifactStagingDirectory)/
+                    path: $(System.DefaultWorkingDirectory)/
                 - task: AzureStaticWebApp@0
                   inputs:
-                    app_location: '$(System.ArtifactStagingDirectory)'
+                    app_location: '/'
                     skip_app_build: true
                     skip_api_build: true
                     is_static_export: true
