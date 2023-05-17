@@ -1,5 +1,12 @@
 trigger:
-  - "*"
+  branches:
+    include:
+      - "*"
+
+pr:
+  branches:
+    include:
+      - '*'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -12,7 +19,7 @@ variables:
   - group: DEPLOYMENT_TOKENS
 
 stages:
-  - stage: Build
+  - stage: Build_and_Test
     displayName: 'Build and Test'
     jobs:
       - job: Build
@@ -36,7 +43,7 @@ stages:
 
   - stage: Deploy
     displayName: 'Deploy to Azure Web App'
-    dependsOn: Build
+    dependsOn: Build_and_Test
     jobs:
       - deployment: Deploy
         displayName: 'Deploy'
@@ -56,7 +63,7 @@ stages:
                     downloadPath: $(System.ArtifactsDirectory)
                 - script: ls -laGh $(System.ArtifactsDirectory)
                 - task: AzureStaticWebApp@0
-                  displayName: Deploy to staging environment
+                  displayName: Deploy to Production environment
                   inputs:
                     app_location: playground-angular
                     skip_app_build: true
@@ -65,3 +72,4 @@ stages:
                     verbose: true
                     azure_static_web_apps_api_token: $(PLAYGROUND_ANGULAR_DEPLOYMENT_TOKEN)
                     workingDirectory: $(System.ArtifactsDirectory)/drop
+                    config_file_location: 'azure-pipelines/'
