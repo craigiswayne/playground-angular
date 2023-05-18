@@ -50,12 +50,14 @@ stages:
   - stage: ProdDeployApproval
     displayName: 'Manual Approval Stage'
     dependsOn: Build_and_Test
+    pool: server
     jobs:
       - job: ApprovalJob
         displayName: 'Approve Deployment'
         steps:
           - task: ManualIntervention@8
             inputs:
+              notifyUsers: 'ApricotInvestmentsLTD\Enterprise Solutions\Developers'
               instructions: 'Please review and approve the deployment.'
 
   - stage: Deploy
