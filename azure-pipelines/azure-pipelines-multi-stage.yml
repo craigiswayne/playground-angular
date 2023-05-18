@@ -48,7 +48,7 @@ stages:
             displayName: 'Lint'
 
   - stage: ProdDeployApproval
-    displayName: 'Manual Approval Stage'
+    displayName: 'Approve: PROD Deploy'
     dependsOn: Build_and_Test
     pool: server
     jobs:
@@ -57,11 +57,11 @@ stages:
         steps:
           - task: ManualIntervention@8
             inputs:
-              notifyUsers: 'ApricotInvestmentsLTD\Enterprise Solutions\Developers'
+              notifyUsers: 'ApricotInvestmentsLTD\Enterprise Solutions Developers'
               instructions: 'Please review and approve the deployment.'
 
   - stage: Deploy
-    displayName: 'Deploy to Azure Web App'
+    displayName: 'Deploy: PROD'
     dependsOn: ProdDeployApproval
     jobs:
       - deployment: Deploy
