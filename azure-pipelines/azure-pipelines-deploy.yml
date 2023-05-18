@@ -23,6 +23,12 @@ steps:
   - script: npm run build
     displayName: 'Angular build'
 
+  - script: npm run test:ci
+    displayName: 'Angular Test'
+
+  - script: npm run lint
+    displayName: 'Angular Lint'
+
   - task: CopyFiles@2
     displayName: 'Copying files from dist folder'
     inputs:

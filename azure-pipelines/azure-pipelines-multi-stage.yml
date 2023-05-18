@@ -45,6 +45,14 @@ stages:
               pathToPublish: dist
               artifactName: drop
 
+  - stage: Lint
+    displayName: 'Lint'
+    jobs:
+      - job: Lint
+        displayName: 'Lint'
+        steps:
+          - script: 'npm run lint'
+            displayName: 'Lint'
 
   - stage: Deploy
     displayName: 'Deploy to Azure Web App'
