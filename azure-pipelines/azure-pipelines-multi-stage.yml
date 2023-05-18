@@ -58,7 +58,7 @@ stages:
           runOnce:
             deploy:
               steps:
-                - task: ManualIntervention@1
+                - task: ManualIntervention@8
                   inputs:
                     instructions: 'Please review and approve the deployment.'
                 - download: none
