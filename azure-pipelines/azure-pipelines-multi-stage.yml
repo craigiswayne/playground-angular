@@ -47,11 +47,6 @@ stages:
           - script: npm run lint
             displayName: 'Lint'
 
-      - job: Lint
-        steps:
-          - script: 'npm run lint'
-            displayName: 'Lint'
-
   - stage: Deploy
     displayName: 'Deploy to Azure Web App'
     dependsOn: Build_and_Test
@@ -63,6 +58,9 @@ stages:
           runOnce:
             deploy:
               steps:
+                - task: ManualIntervention@1
+                  inputs:
+                    instructions: 'Please review and approve the deployment.'
                 - download: none
                 - checkout: none
                 - task: DownloadBuildArtifacts@1
