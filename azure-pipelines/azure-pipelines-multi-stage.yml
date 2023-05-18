@@ -57,7 +57,6 @@ stages:
         steps:
           - task: ManualIntervention@8
             inputs:
-              notifyUsers: 'ApricotInvestmentsLTD\Enterprise Solutions Developers'
               instructions: 'Please review and approve the deployment.'
 
   - stage: Deploy
