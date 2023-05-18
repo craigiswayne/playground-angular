@@ -44,6 +44,8 @@ stages:
             inputs:
               pathToPublish: dist
               artifactName: drop
+          - script: npm run lint
+            displayName: 'Lint'
 
       - job: Lint
         steps:
