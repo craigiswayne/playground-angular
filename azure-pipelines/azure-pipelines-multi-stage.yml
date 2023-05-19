@@ -47,8 +47,41 @@ stages:
           - script: npm run lint
             displayName: 'Lint'
 
+  - stage: DeployPROD
+    displayName: 'Deploy: PROD'
+    dependsOn: ManualProdDeploy
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy'
+        environment: 'production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: none
+                - checkout: none
+                - task: DownloadBuildArtifacts@1
+                  displayName: Download artifacts
+                  inputs:
+                    buildType: current
+                    downloadType: single
+                    artifactName: drop
+                    downloadPath: $(System.ArtifactsDirectory)
+                - script: ls -laGh $(System.ArtifactsDirectory)
+                - task: AzureStaticWebApp@0
+                  displayName: Deploy to Production environment
+                  inputs:
+                    app_location: playground-angular
+                    skip_app_build: true
+                    skip_api_build: true
+                    is_static_export: true
+                    verbose: true
+                    azure_static_web_apps_api_token: $(PLAYGROUND_ANGULAR_DEPLOYMENT_TOKEN)
+                    workingDirectory: $(System.ArtifactsDirectory)/drop
+                    config_file_location: '/azure-pipelines/'
+
   - stage: ManualProdDeploy
-    displayName: 'Approval Required'
+    displayName: 'PROD Deploy: $(APP_NAME) Approval'
     dependsOn: Build_and_Test
     jobs:
       - job: ApprovalJob
@@ -62,7 +95,7 @@ stages:
               instructions: 'On Approval, performs a PROD Deploy'
               onTimeout: 'resume'
 
-  - stage: Deploy
+  - stage: DeployPROD
     displayName: 'Deploy: PROD'
     dependsOn: ManualProdDeploy
     jobs:
