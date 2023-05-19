@@ -50,14 +50,19 @@ stages:
   - stage: ProdDeployApproval
     displayName: 'Approve: PROD Deploy'
     dependsOn: Build_and_Test
-    pool: server
     jobs:
       - job: ApprovalJob
         displayName: 'Approve Deployment'
+        pool: server
+        timeoutInMinutes: 4320 # job times out in 3 days
         steps:
-          - task: ManualIntervention@8
+          - task: ManualValidation@0
+            timeoutInMinutes: 1440 # task times out in 1 day
             inputs:
-              instructions: 'Please review and approve the deployment.'
+              notifyUsers: |
+                craigwg@microgaming.co.uk
+              instructions: 'Please validate the build configuration and resume'
+              onTimeout: 'resume'
 
   - stage: Deploy
     displayName: 'Deploy: PROD'
