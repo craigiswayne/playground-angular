@@ -47,24 +47,24 @@ stages:
           - script: npm run lint
             displayName: 'Lint'
 
-  - stage: ProdDeployApproval
-    displayName: 'Approve: PROD Deploy'
+  - stage: ManualProdDeploy
+    displayName: 'Approval Required'
     dependsOn: Build_and_Test
     jobs:
       - job: ApprovalJob
-        displayName: 'Approve Deployment'
+        displayName: 'Approval for Prod Deploy'
         pool: server
         steps:
           - task: ManualValidation@0
             inputs:
               notifyUsers: |
                 craigwg@microgaming.co.uk
-              instructions: 'Performs a PROD Deploy'
+              instructions: 'On Approval, performs a PROD Deploy'
               onTimeout: 'resume'
 
   - stage: Deploy
     displayName: 'Deploy: PROD'
-    dependsOn: ProdDeployApproval
+    dependsOn: ManualProdDeploy
     jobs:
       - deployment: Deploy
         displayName: 'Deploy'
