@@ -4,6 +4,9 @@ trigger:
 variables:
   - name: APP_NAME
     value: 'playground-angular'
+  - name: IS_PROD
+    # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/expressions?view=azure-devops
+    value: ${{ startsWith(variables['Build.SourceBranch'], 'refs/heads/release/') }}
   # defined in the Pipeline Library variable group
   # see: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml
 #  - group: DEFAULT_VARIABLE_GROUP
@@ -12,22 +15,9 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  - task: NodeTool@0
-    displayName: 'Install Node.js'
-    inputs:
-      versionSpec: '16.19.x'
-
-  - script: npm ci
-    displayName: 'Install Node Packages'
-
-  - script: npm run build
-    displayName: 'Angular build'
-
-  - script: npm run test:ci
-    displayName: 'Angular Test'
-
-  - script: npm run lint
-    displayName: 'Angular Lint'
+  - template: template-install-lint-build.yml
+    parameters:
+      isProd: ${{ variables.IS_PROD }}
 
   - task: CopyFiles@2
     displayName: 'Copying files from dist folder'
@@ -36,6 +26,7 @@ steps:
         dist/$(APP_NAME)
       TargetFolder: $(Build.ArtifactStagingDirectory)
 
+# see: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-static-web-app-v0?view=azure-pipelines
 #  - task: AzureStaticWebApp@0
 #    inputs:
 #      app_location: '/dist/$(APP_NAME)/'

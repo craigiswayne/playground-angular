@@ -1,0 +1,27 @@
+parameters:
+  - name: isProd
+    type: boolean
+    default: false
+
+steps:
+  - task: NodeTool@0
+    displayName: 'Install Node.js'
+    inputs:
+      versionSpec: '14.21.3'
+
+  - task: Npm@1
+    displayName: 'Install Node Packages'
+    inputs:
+      command: 'ci'
+
+  - script: npm run lint
+    displayName: 'Lint: Typescript'
+
+
+  - script: npm run build
+    condition: ${{ eq(parameters.isProd, false) }}
+    displayName: 'Angular Build: UAT'
+
+  - script: npm run build:prod
+    condition: ${{ eq(parameters.isProd, true) }}
+    displayName: 'Angular Build: PROD'
