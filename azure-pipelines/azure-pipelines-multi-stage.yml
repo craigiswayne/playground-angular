@@ -29,8 +29,10 @@ stages:
             inputs:
               versionSpec: '14.21.3'
             displayName: 'Install Node.js'
+          - task: Npm@1
+            inputs:
+              command: 'ci'
           - script: |
-              npm ci
               npm run build
               npm run test:ci
             displayName: 'Build and Test'
