@@ -3,7 +3,7 @@ import { CustomFormControlDemoComponent } from './custom-form-control-demo.compo
 import { CustomFormControlDemoRoutingModule } from './custom-form-control-demo-routing.module';
 import { FormControlGenderComponent } from './form-control-gender/form-control-gender.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { KeyValuePipe, NgForOf, NgIf } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,9 @@ import { CommonModule } from '@angular/common';
     FormControlGenderComponent
   ],
   imports: [
-    CommonModule,
+    KeyValuePipe,
+    NgForOf,
+    NgIf,
     CustomFormControlDemoRoutingModule,
     ReactiveFormsModule,
   ]
