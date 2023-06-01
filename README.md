@@ -5,6 +5,5 @@
   * paginate?
 * app-settings injected via api
 * app-shell
-* 
 
 # angular form groups with nested form groups and disabling nested forms
