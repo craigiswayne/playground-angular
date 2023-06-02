@@ -8,6 +8,11 @@ const routes: Routes = [
     component: GlossaryComponent
   },
   {
+    path: 'only-numbers-form-validation-demo',
+    loadChildren: () => import('./modules/only-numbers-form-validation-demo/only-numbers-form-validation-demo.module')
+      .then(m => m.OnlyNumbersFormValidationDemoModule)
+  },
+  {
     path: 'custom-form-control-demo',
     loadChildren: () => import('./modules/custom-form-control-demo/custom-form-control-demo.module')
       .then(m => m.CustomFormControlDemoModule)
