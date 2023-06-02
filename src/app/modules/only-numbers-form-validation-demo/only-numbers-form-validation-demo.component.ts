@@ -16,7 +16,7 @@ export class OnlyNumbersFormValidationDemoComponent implements OnInit {
     this.demoForm = this.formBuilder.group({
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
-      age: [null, [MyValidators.onlyWholeNumbersValidator, Validators.min(1), Validators.max(99), Validators.required]],
+      age: [null, [MyValidators.onlyWholeNumbers, Validators.min(1), Validators.max(99), Validators.required]],
     });
   }
 }
