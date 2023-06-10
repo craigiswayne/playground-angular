@@ -1,6 +1,14 @@
 <h1>Custom Form Control Demo</h1>
 
-<p>Below is a form</p>
+<p>Below is a form with all fields marked as required</p>
+<p>The Age field has additional validation, namely:</p>
+<div>
+  <ol>
+    <li>Min value of 1</li>
+    <li>Max value of 99</li>
+    <li>Can only be whole numbers</li>
+  </ol>
+</div>
 <form [formGroup]="demoForm">
   <div>
     <label>First Name</label>
@@ -11,8 +19,8 @@
     <input type="text" formControlName="lastName"/>
   </div>
   <div>
-    <label>Gender</label>
-    <app-form-control-gender formControlName="gender"></app-form-control-gender>
+    <label>Age</label>
+    <input type="text" formControlName="age"/>
   </div>
 </form>
 
@@ -39,6 +47,6 @@
 <div>
   References:
   <ul>
-    <li>https://blog.angular-university.io/angular-custom-form-controls/</li>
+    <li>https://blog.angular-university.io/angular-custom-validators//</li>
   </ul>
 </div>

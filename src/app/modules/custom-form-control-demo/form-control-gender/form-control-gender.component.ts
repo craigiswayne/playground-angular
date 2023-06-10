@@ -22,7 +22,7 @@ export class FormControlGenderComponent implements ControlValueAccessor {
   disabled = false;
 
   private myCustomProp: gender|null = null;
-  public setCustomProp(gender: gender) {
+  public setControlValue(gender: gender) {
     this.markAsTouched();
     this.myCustomProp = gender;
     this.onChange(gender);
