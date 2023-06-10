@@ -10,6 +10,6 @@ import { APP_SETTINGS } from './app.settings';
       </li>
     </ul>`
 })
-export class GlossaryComponent {
+export class HomeComponent {
   public links = APP_SETTINGS.links;
 }
