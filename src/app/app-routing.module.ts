@@ -1,11 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'azure-authenticated',
+    loadChildren: () => import('./modules/azure-authenticated/azure-authenticated.module')
+      .then(m => m.AzureAuthenticatedModule)
   },
   {
     path: 'only-numbers-form-validation-demo',
@@ -26,6 +32,10 @@ const routes: Routes = [
     path: 'material-tabs-demo',
     loadChildren: () => import('./modules/material-tabs-demo/material-tabs-demo.module')
       .then(m => m.MaterialTabsDemoModule)
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
   }
 ];
 
