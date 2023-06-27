@@ -1,0 +1,28 @@
+parameters:
+  - name: env
+    type: string
+    values:
+      - 'uat'
+      - 'prod'
+  - name: ARTIFACT_NAME
+    type: string
+
+steps:
+  - script: 'npm run build:${{parameters.env}}'
+    displayName: 'Angular Build: ${{upper(parameters.env)}}'
+
+  - task: CopyFiles@2
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    displayName: 'Copying files from $(ANGULAR_BUILD_OUTPUT_FOLDER) folder'
+    inputs:
+      contents: |
+        azure-pipelines/staticwebapp.config.json
+      targetFolder: '$(ANGULAR_BUILD_OUTPUT_FOLDER)/$(APP_NAME)'
+      flattenFolders: true
+
+  - task: PublishBuildArtifacts@1
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    displayName: 'Publish Artifact: ${{upper(parameters.env)}}'
+    inputs:
+      pathToPublish: '$(ANGULAR_BUILD_OUTPUT_FOLDER)/$(APP_NAME)'
+      artifactName: '${{parameters.ARTIFACT_NAME}}'
