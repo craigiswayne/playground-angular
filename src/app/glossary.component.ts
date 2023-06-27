@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { APP_SETTINGS } from './app.settings';
 
 @Component({
   template: `
@@ -10,7 +11,5 @@ import { Component } from '@angular/core';
     </ul>`
 })
 export class GlossaryComponent {
-  public links = [
-    'custom-form-control-demo'
-  ]
+  public links = APP_SETTINGS.links;
 }
