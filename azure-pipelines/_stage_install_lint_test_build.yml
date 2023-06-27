@@ -1,0 +1,43 @@
+stages:
+  - stage: StageJobInstallLintBuildTest
+    displayName: 'Install, Lint, Build and Test'
+    jobs:
+      - job: JobInstallLintBuildTest
+        displayName: 'Build'
+        steps:
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: '14.21.3'
+
+          # https://learn.microsoft.com/en-us/azure/devops/pipelines/release/caching?view=azure-devops
+          # https://josh-ops.com/posts/azdo-angular-pipeline-caching/
+          - task: Cache@2
+            displayName: load npm cache
+            inputs:
+              key: npm | $(Agent.OS) | $(Build.SourcesDirectory)/package-lock.json
+              restoreKeys: |
+                npm | "$(Agent.OS)"
+              path: $(Build.SourcesDirectory)/node_modules
+              cacheHitVar: CACHE_HIT
+
+          - task: Npm@1
+            displayName: 'Install Node Packages'
+            inputs:
+              command: 'ci'
+
+          - script: npm run lint
+            displayName: 'Lint: Typescript'
+
+          - script: npm run test:ci
+            displayName: 'Test'
+
+          - template: _build_copy_publish.yml
+            parameters:
+              env: 'uat'
+              ARTIFACT_NAME: '$(ARTIFACT_NAME_UAT)'
+
+          - template: _build_copy_publish.yml
+            parameters:
+              env: 'prod'
+              ARTIFACT_NAME: '$(ARTIFACT_NAME_PROD)'

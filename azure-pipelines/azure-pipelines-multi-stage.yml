@@ -1,0 +1,66 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - 'develop'
+      - 'main'
+      - '*'
+  paths:
+    exclude:
+      - '*.md'
+
+pr:
+  branches:
+    include:
+      - '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: APP_NAME
+    value: 'playground-angular'
+  - name: ANGULAR_BUILD_OUTPUT_FOLDER
+    value: 'dist'
+  - name: ARTIFACT_NAME_UAT
+    value: '$(Build.Repository.Name).$(Build.BuildNumber)_uat'
+  - name: ARTIFACT_NAME_PROD
+    value: '$(Build.Repository.Name).$(Build.BuildNumber)_prod'
+  # defined in the Pipeline Library variable group
+  # see: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=yaml
+  - group: DEFAULT_VARIABLE_GROUP
+
+
+stages:
+  - template: _stage_install_lint_test_build.yml
+
+  - stage: StageManualProdDeploy
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    displayName: 'PROD Deploy Approval: ${{variables.APP_NAME}}'
+    dependsOn: StageJobInstallLintBuildTest
+    jobs:
+      - job: JobApproval
+        timeoutInMinutes: 5
+        displayName: 'Approval for Prod Deploy'
+        pool: server
+        steps:
+          # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/manual-validation-v0?view=azure-pipelines
+          - task: ManualValidation@0
+            timeoutInMinutes: 6
+            inputs:
+              notifyUsers: |
+                $(Build.RequestedForEmail)
+              instructions: 'On Approval, performs a PROD Deploy'
+              onTimeout: reject
+
+  - template: _stage_deploy.yml
+    parameters:
+      env: 'prod'
+      ARTIFACT_NAME: '$(ARTIFACT_NAME_PROD)'
+      dependsOn: 'StageManualProdDeploy'
+
+  - template: _stage_deploy.yml
+    parameters:
+      env: 'uat'
+      ARTIFACT_NAME: '$(ARTIFACT_NAME_UAT)'
+      dependsOn: 'StageJobInstallLintBuildTest'

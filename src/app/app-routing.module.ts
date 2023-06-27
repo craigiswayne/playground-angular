@@ -23,6 +23,11 @@ const routes: Routes = [
       .then(m => m.CustomFormControlDemoModule)
   },
   {
+    path: 'azure-authenticated',
+    loadChildren: () => import('./modules/azure-authenticated/azure-authenticated.module')
+      .then(m => m.AzureAuthenticatedModule)
+  },
+  {
     path: 'material-tabs-demo',
     loadChildren: () => import('./modules/material-tabs-demo/material-tabs-demo.module')
       .then(m => m.MaterialTabsDemoModule)
