@@ -1,32 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { GlossaryComponent } from './glossary.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: GlossaryComponent
   },
   {
     path: 'azure-authenticated',
     loadChildren: () => import('./modules/azure-authenticated/azure-authenticated.module')
       .then(m => m.AzureAuthenticatedModule)
-  },
-  {
-    path: 'only-numbers-form-validation-demo',
-    loadChildren: () => import('./modules/only-numbers-form-validation-demo/only-numbers-form-validation-demo.module')
-      .then(m => m.OnlyNumbersFormValidationDemoModule)
-  },
-  {
-    path: 'only-numbers-form-validation-demo',
-    loadChildren: () => import('./modules/only-numbers-form-validation-demo/only-numbers-form-validation-demo.module')
-      .then(m => m.OnlyNumbersFormValidationDemoModule)
-  },
-  {
-    path: 'only-numbers-form-validation-demo',
-    loadChildren: () => import('./modules/only-numbers-form-validation-demo/only-numbers-form-validation-demo.module')
-      .then(m => m.OnlyNumbersFormValidationDemoModule)
   },
   {
     path: 'custom-form-control-demo',
