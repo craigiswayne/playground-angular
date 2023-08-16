@@ -8,6 +8,9 @@ import { APP_SETTINGS } from './app.settings';
       <li *ngFor="let item of links">
         <a [routerLink]="[item]">{{item}}</a>
       </li>
+      <li>
+        <a [routerLink]="['/broken']">BROKEN PAGE</a>
+      </li>
     </ul>`
 })
 export class HomeComponent {
