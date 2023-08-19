@@ -34,6 +34,11 @@ const routes: Routes = [
       .then(m => m.MaterialTabsDemoModule)
   },
   {
+    path: 'api-requester',
+    loadChildren: () => import('./modules/api-requester/api-requester.module')
+      .then(m => m.ApiRequesterModule)
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }

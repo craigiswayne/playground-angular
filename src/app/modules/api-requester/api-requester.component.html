@@ -1,0 +1,7 @@
+<h1>Makes a request to an API</h1>
+<label>API Endpoint</label>
+<input placeholder="endpoint" required #txtInput/>
+<button (click)="makeRequest(txtInput.value)">Make Request</button>
+
+<h3>Response:</h3>
+<div id="response" [innerHTML]="response$ | async"></div>
