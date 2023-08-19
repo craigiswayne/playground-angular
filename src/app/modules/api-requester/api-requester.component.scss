@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+button {
+  display: block;
+  width: 120px;
+}
+#response {
+  white-space: pre;
+  width: 100%;
+  min-height: 500px;
+  background: #e0e0e0;
+}
