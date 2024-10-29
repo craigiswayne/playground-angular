@@ -1,0 +1,10 @@
+<fieldset>
+  <legend><h1>Behaviour Subject Demo</h1></legend>
+  <p><strong>Counter (using async pipe): {{service.value$ | async}}</strong></p>
+  <p><strong>Counter (from subscribed variable): {{subscribed_variable}}</strong></p>
+  <p><strong>Counter (from tapped variable): {{tapped_variable}}</strong></p>
+  <fieldset>
+    <legend>Child Component</legend>
+    <app-behaviour-subject-demo-child />
+  </fieldset>
+</fieldset>

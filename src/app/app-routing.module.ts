@@ -39,6 +39,11 @@ const routes: Routes = [
       .then(m => m.ApiRequesterModule)
   },
   {
+    path: 'behaviour-subject-demo',
+    loadChildren: () => import('./modules/behaviour-subject-demo/behaviour-subject-demo.module')
+      .then(m => m.BehaviourSubjectDemoModule)
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }
