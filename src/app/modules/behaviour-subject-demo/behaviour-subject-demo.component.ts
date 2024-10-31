@@ -10,7 +10,7 @@ export class BehaviourSubjectDemoComponent {
   public subscribed_variable: number;
   public tapped_variable: number;
   constructor(public service: BehaviourSubjectDemoService) {
-    this.service.value$
+    this.service.obs$
       .pipe(
         tap( res => {
           this.tapped_variable = res;
