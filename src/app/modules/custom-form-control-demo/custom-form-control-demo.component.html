@@ -3,15 +3,15 @@
 <p>Below is a form</p>
 <form [formGroup]="demoForm">
   <div>
-    <label>First Name</label>
+    <label [htmlFor]="'firstName'">First Name</label>
     <input type="text" formControlName="firstName"/>
   </div>
   <div>
-    <label>Last Name</label>
+    <label [htmlFor]="'lastName'">Last Name</label>
     <input type="text" formControlName="lastName"/>
   </div>
   <div>
-    <label>Gender</label>
+    <label [htmlFor]="'gender'">Gender</label>
     <app-form-control-gender formControlName="gender"></app-form-control-gender>
   </div>
 </form>

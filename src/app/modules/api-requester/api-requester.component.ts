@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from "@angular/core";
 import {APIRequesterService} from "./api-requester.service";
-import {BehaviorSubject, catchError, map, of, Subject, takeUntil, throwError} from "rxjs";
+import {BehaviorSubject, catchError, map, Subject, takeUntil, throwError} from "rxjs";
 
 @Component({
   templateUrl: './api-requester.component.html',
@@ -8,6 +8,7 @@ import {BehaviorSubject, catchError, map, of, Subject, takeUntil, throwError} fr
 })
 export class APIRequesterComponent implements OnDestroy {
 
+  // @ts-ignore
   public response$ = new BehaviorSubject<any|null>(null);
   private destroyed$ = new Subject<void>();
 
