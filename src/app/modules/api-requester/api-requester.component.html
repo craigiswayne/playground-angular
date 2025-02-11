@@ -1,5 +1,5 @@
 <h1>Makes a request to an API</h1>
-<label>API Endpoint</label>
+<label [htmlFor]="txtInput">API Endpoint</label>
 <input placeholder="endpoint" required #txtInput/>
 <button (click)="makeRequest(txtInput.value)">Make Request</button>
 

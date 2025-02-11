@@ -11,15 +11,15 @@
 </div>
 <form [formGroup]="demoForm">
   <div>
-    <label>First Name</label>
+    <label [htmlFor]="'firstName'">First Name</label>
     <input type="text" formControlName="firstName"/>
   </div>
   <div>
-    <label>Last Name</label>
+    <label [htmlFor]="'lastName'">Last Name</label>
     <input type="text" formControlName="lastName"/>
   </div>
   <div>
-    <label>Age</label>
+    <label [htmlFor]="'age'">Age</label>
     <input type="number" formControlName="age"/>
   </div>
 </form>

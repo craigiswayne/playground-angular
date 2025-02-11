@@ -1,0 +1,26 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <input formControlName="username" />
+  <input formControlName="password" />
+  <div class="text-center">
+    <button type="submit">Submit</button>
+  </div>
+</form>
+
+<hr/>
+
+<h2>Bootstrap Validation</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <input formControlName="username"
+         [ngClass]="{'is-invalid': form.dirty && form.controls['username'].invalid}"
+         class="form-control"
+  />
+
+  <input formControlName="password"
+         [ngClass]="{'is-invalid': form.dirty && form.controls['password'].invalid}"
+         class="form-control"
+  />
+  <div class="text-center">
+    <button type="submit">Submit</button>
+  </div>
+</form>
