@@ -19,5 +19,6 @@ jobs:
         with:
           name: dist-without-markdown
           path: |
-            dist
+            dist/playground-angular
             !dist/**/*.md
+            !dist/**/*.txt
